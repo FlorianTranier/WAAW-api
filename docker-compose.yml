@@ -23,7 +23,7 @@ services:
     volumes:
       - "./letsencrypt:/letsencrypt"
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-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 
+
   api:
     image: "docker.pkg.github.com/floriantranier/waaw-api/api-waaw:latest"
     container_name: api-waaw
