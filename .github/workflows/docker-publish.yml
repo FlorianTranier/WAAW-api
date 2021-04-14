@@ -14,7 +14,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: ftranier/api-waaw
+  IMAGE_NAME: api-waaw
 
 jobs:
   # Run tests.
