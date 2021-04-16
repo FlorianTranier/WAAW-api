@@ -6,7 +6,7 @@
   "scripts": {
     "watch": "tsc -w",
     "dev": "NODE_ENV=dev nodemon dist/index.js",
-    "build": "npx tsc --build tsconfig.json",
+    "build": "npx tsc",
     "start": "yarn build && NODE_ENV=prod node dist/index.js",
     "build-docker-image": "yarn build && docker build -t ftranier/api-waaw ."
   },
