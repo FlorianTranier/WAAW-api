@@ -34,7 +34,8 @@ app.get('/info', async (req, res) => {
     
     res.status(200).send({
         duration: infos.videoDetails.lengthSeconds,
-        title: infos.videoDetails.title
+        title: infos.videoDetails.title,
+        thumbnail: infos.videoDetails.thumbnail.thumbnails[0]?.url
     })
 })
 
