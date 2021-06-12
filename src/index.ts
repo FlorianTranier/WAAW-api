@@ -7,7 +7,7 @@ const app = express()
 const isDevelopment = process.env.NODE_ENV === 'dev'
 
 const corsOptions = {
-    origin: isDevelopment ? 'http://localhost:3000' : 'https://waaw.space'
+    origin: isDevelopment ? '*' : 'https://waaw.space'
 }
 
 app.use(cors(corsOptions))
@@ -16,7 +16,8 @@ app.get('/', (req, res) => {
     const videoId = req.query.videoId
 
     const stream = ytdl(`https://youtube.com/watch?v=${videoId}`, {
-        quality: 'highestaudio'
+        quality: 'highest',
+        filter: 'audioandvideo'
     })
 
     try {
@@ -31,11 +32,11 @@ app.get('/info', async (req, res) => {
     const videoId = req.query.videoId
 
     const infos = await ytdl.getBasicInfo(`https://youtube.com/watch?v=${videoId}`)
-    
+
     res.status(200).send({
         duration: infos.videoDetails.lengthSeconds,
         title: infos.videoDetails.title,
-        thumbnail: infos.videoDetails.thumbnail.thumbnails[0]?.url
+        thumbnail: infos.videoDetails.thumbnails.pop()?.url
     })
 })
 

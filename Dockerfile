@@ -4,8 +4,8 @@ WORKDIR /usr/src/app
 
 COPY ./ ./
 
-RUN yarn
-RUN yarn build
+RUN npm install
+RUN npm run build
 
 EXPOSE 4000
 
