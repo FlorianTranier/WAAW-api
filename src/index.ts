@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import ytdl from 'ytdl-core'
+import { AudioService } from './services/audio/AudioService'
 
 const app = express()
 
@@ -15,11 +16,18 @@ app.use(cors(corsOptions))
 app.get('/', (req, res) => {
     const videoId = req.query.videoId
 
-    const stream = ytdl(`https://youtube.com/watch?v=${videoId}`, {
-        quality: 'highest',
-        filter: 'audioandvideo'
+    const youtubeVideoStream = ytdl(`https://youtube.com/watch?v=${videoId}`, {
+        quality: 'highestvideo',
+        filter: 'videoonly'
     })
 
+    const youtubeAudioStream = ytdl(`https://youtube.com/watch?v=${videoId}`, {
+        quality: 'highestaudio',
+        filter: 'audioonly'
+    })
+
+    const stream = AudioService.combineVideoAndAudioStream(youtubeVideoStream, youtubeAudioStream)
+    
     try {
         stream.pipe(res)
     } catch (e) {
