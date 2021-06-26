@@ -11,7 +11,7 @@
     "dev": "tsc -w & NODE_ENV=dev nodemon dist/index.js",
     "build": "npx tsc",
     "start": "NODE_ENV=prod node dist/index.js",
-    "build-docker-image": "yarn build && docker build -t ftranier/api-waaw ."
+    "docker-build": "docker build -t waaw-api . && docker tag waaw-api registry.ftranier.fr/waaw-api && docker push registry.ftranier.fr/waaw-api"
   },
   "keywords": [],
   "author": "Florian Tranier",
