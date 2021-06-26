@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import ytdl from 'ytdl-core'
 import { AudioService } from './services/audio/AudioService'
+import os from 'os-utils'
 
 require('dotenv').config()
 const app = express()
@@ -14,11 +15,17 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 
+let cpuUsage: number = 0
+
+setInterval(() => {
+    os.cpuUsage(p => cpuUsage = p)
+}, 1000)
+
 app.get('/', (req, res) => {
     const videoId = req.query.videoId
 
     let stream;
-    if (process.env.FFMPEG_ENABLED) {
+    if (process.env.FFMPEG_ENABLED && cpuUsage < 0.40) {
         const youtubeVideoStream = ytdl(`https://youtube.com/watch?v=${videoId}`, {
             quality: 'highestvideo',
             filter: format => ['tiny', 'small', 'medium', 'large', 'hd720', 'hd1080'].includes(format.quality)
@@ -36,8 +43,6 @@ app.get('/', (req, res) => {
             filter: 'audioandvideo'
         })
     }
-
-    
     
     try {
         stream.pipe(res)

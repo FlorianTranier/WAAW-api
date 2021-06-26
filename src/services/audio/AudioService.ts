@@ -7,6 +7,7 @@ export class AudioService {
     static combineVideoAndAudioStream(video: Readable, audio: Readable): Readable {
 
         const ffmpegProcess = cp.spawn(ffmpeg, [
+            '-loglevel', '8', '-hide_banner',
             '-thread_queue_size', '5040',
             '-i', 'pipe:3',
             '-i', 'pipe:4',
