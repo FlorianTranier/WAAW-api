@@ -16,17 +16,27 @@ app.use(cors(corsOptions))
 app.get('/', (req, res) => {
     const videoId = req.query.videoId
 
-    const youtubeVideoStream = ytdl(`https://youtube.com/watch?v=${videoId}`, {
-        quality: 'highestvideo',
-        filter: 'videoonly'
-    })
+    let stream;
+    if (process.env.FFMPEG_ENABLED) {
+        const youtubeVideoStream = ytdl(`https://youtube.com/watch?v=${videoId}`, {
+            quality: 'highestvideo',
+            filter: 'videoonly'
+        })
 
-    const youtubeAudioStream = ytdl(`https://youtube.com/watch?v=${videoId}`, {
-        quality: 'highestaudio',
-        filter: 'audioonly'
-    })
+        const youtubeAudioStream = ytdl(`https://youtube.com/watch?v=${videoId}`, {
+            quality: 'highestaudio',
+            filter: 'audioonly'
+        })
 
-    const stream = AudioService.combineVideoAndAudioStream(youtubeVideoStream, youtubeAudioStream)
+        stream = AudioService.combineVideoAndAudioStream(youtubeVideoStream, youtubeAudioStream)
+    } else {
+        stream = ytdl(`https://youtube.com/watch?v=${videoId}`, {
+            quality: 'highest',
+            filter: 'audioandvideo'
+        })
+    }
+
+    
     
     try {
         stream.pipe(res)
