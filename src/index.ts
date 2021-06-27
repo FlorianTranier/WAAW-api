@@ -60,7 +60,8 @@ app.get('/info', async (req, res) => {
     res.status(200).send({
         duration: infos.videoDetails.lengthSeconds,
         title: infos.videoDetails.title,
-        thumbnail: infos.videoDetails.thumbnails.pop()?.url
+        thumbnail: infos.videoDetails.thumbnails.pop()?.url,
+        nextVideo: infos.related_videos[0].id
     })
 })
 
